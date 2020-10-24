@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 const App = () => {
-  const [number, setNumber] = useState(1);
+  const [number, setNumber] = useState("");
 
   const changeHandler = (val) => {
     setNumber(val);
