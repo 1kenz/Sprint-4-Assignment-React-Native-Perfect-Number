@@ -1,113 +1,130 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
+  TextInput,
+  Button,
+  Alert,
+  Image,
+  Dimensions,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const App = () => {
+  const [number, setNumber] = useState(1);
 
-const App: () => React$Node = () => {
+  const changeHandler = (val) => {
+    setNumber(val);
+  };
+
+  const submitHandler = () => {
+    is_perfect(parseInt(number));
+    setNumber('');
+  };
+
+  function keyPress(e) {
+    if (e.keyCode == 13) {
+      e.target.submitHandler;
+    }
+  }
+
+  function is_perfect(num) {
+    var temp = 0;
+
+    if (num < 0 || isNaN(num) || num === undefined) {
+      return Alert.alert('lighthouse-team', 'Please enter positive number');
+    } else {
+      for (var i = 1; i <= num / 2; i++) {
+        if (num % i === 0) {
+          temp += i;
+        }
+      }
+
+      if (temp === num && temp !== 0) {
+        Alert.alert(
+          'lighthouse-team',
+          'Congratulations, it is a perfect number !!!',
+        );
+      } else {
+        Alert.alert('lighthouse-team', 'It is not a perfect number !');
+      }
+    }
+  }
+
   return (
     <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
+      <SafeAreaView style={{flex: 1}}>
+        <View style={styles.imageContainer}>
+          <Image
+            style={styles.image}
+            source={require('./src/img/perfect-numbers.jpg')}
+          />
+        </View>
+        <View style={styles.container}>
+          <TextInput
+            style={styles.numberInput}
+            keyboardType="number-pad"
+            // selectTextOnFocus={true}
+            value={number}
+            autoFocus={true}
+            placeholder="Please input a number..."
+            placeholderTextColor="#777"
+            onSubmitEditing={() => {
+              submitHandler(number);
+              setNumber('');
+            }}
+            onChangeText={changeHandler}
+            onChangeText={(val) => {
+              setNumber(val);
+            }}
+          />
+          <Button
+            style={styles.button}
+            title="Is it perfect number ?"
+            onPress={() => {
+              submitHandler();
+            }}
+          />
+        </View>
       </SafeAreaView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  container: {
+    flex: 1,
+    backgroundColor: '#e74c3c',
+
+    // justifyContent: 'center',
+    alignItems: 'center',
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
+  numberInput: {
+    width: Dimensions.get('window').width * 0.7,
+    backgroundColor: '#ececec',
+    textAlign: 'center',
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 5,
+    margin: 20,
+    padding: 10,
+    paddingHorizontal: 15,
+    fontSize: 20,
   },
-  body: {
-    backgroundColor: Colors.white,
+  button: {
+    width: Dimensions.get('window').width * 0.5,
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  imageContainer: {
+    backgroundColor: '#e74c3c',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  image: {
+    height: Dimensions.get('window').height * 0.35,
+    width: Dimensions.get('window').width * 0.9,
+    margin: 10,
+    resizeMode: 'cover',
   },
 });
 
